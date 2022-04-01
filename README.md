@@ -2,9 +2,10 @@
 
 [![npm](https://img.shields.io/npm/v/esbuild-plugin-lit.svg?style=flat-square)](https://www.npmjs.com/package/esbuild-plugin-lit)
 
-A plugin for [esbuild]() that allows importing CSS, SVG, HTML files as
-tagged-template literals. The files are (optionally) minified using esbuild
-minifier (for CSS) and [svgo]() (for SVG).
+A plugin for [esbuild](https://esbuild.github.io/) that allows importing CSS,
+SVG, HTML files as tagged-template literals. The files are (optionally) minified
+using esbuild minifier (for CSS) and [svgo](https://github.com/svg/svgo) (for
+SVG).
 
 ## Usage
 
@@ -68,7 +69,7 @@ require("esbuild").build({
   outfile: "index.js",
   minify: true,
   plugins: [litPlugin({
-    svgOptions: {
+    svgo: {
       plugins: [
         "preset-default",
         "removeXMLNS",

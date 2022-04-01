@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-lit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Import CSS, SVG, HTML files as tagged-template literals. Optionally minify with esbuild minifier.",
   "main": "index.js",
   "scripts": {

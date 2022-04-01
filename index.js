@@ -7,15 +7,11 @@ try {
   svgo = undefined;
 }
 
-function toLiteral(str) {
-  return str.replace(/([\`$])/g, "\\$1");
-}
-
 function esbuildPluginLit(options = {}) {
   const {
     filter = /\.(css|svg|html)$/,
     specifier = "lit",
-    svgOptions = {},
+    svgo: svgOptions = {},
   } = options;
 
   return {
@@ -42,7 +38,7 @@ function esbuildPluginLit(options = {}) {
             output = optimized.data;
           }
           const tag = isCss ? "css" : "html";
-          output = toLiteral(output);
+          output = output.replace(/(\$\{|`)/g, "\\$1");
           output = `import { ${tag} } from '${specifier}';
 export const template = ${tag}\`${output}\`;
 export default template;`;
