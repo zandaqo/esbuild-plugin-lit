@@ -8,7 +8,7 @@ export class CSSLoader extends AssetLoader {
   load(input: string): string {
     let output = this.transform(input);
     if (this.minifier) {
-      output = this.minifier.esbuild.transformSync(input, {
+      output = this.minifier.esbuild.transformSync(output, {
         loader: "css",
         minify: true,
       }).code;

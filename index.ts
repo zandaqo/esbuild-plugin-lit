@@ -2,6 +2,7 @@ import { readFile } from "fs/promises";
 import { CSSLoader } from "./css-loader";
 import { HTMLLoader } from "./html-loader";
 import { SVGLoader } from "./svg-loader";
+import { XLFLoader } from "./xlf-loader";
 import type { OptimizeOptions } from "svgo";
 
 let svgo;
@@ -28,11 +29,12 @@ export interface Options {
   svg?: LoaderOptions & {
     svgo?: OptimizeOptions;
   };
+  xlf?: LoaderOptions;
 }
 
 function esbuildPluginLit(options: Options = {}) {
   const {
-    filter = /\.(css|svg|html)$/,
+    filter = /\.(css|svg|html|xlf)$/,
     specifier = "lit",
   } = options;
   const loaders = [
@@ -44,6 +46,12 @@ function esbuildPluginLit(options: Options = {}) {
       options.svg?.transform,
       svgo?.optimize,
       options.svg?.svgo,
+    ),
+    new XLFLoader(
+      options.xlf?.extension,
+      specifier,
+      options.xlf?.transform,
+      txml?.parse,
     ),
   ];
   return {
