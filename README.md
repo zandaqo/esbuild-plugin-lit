@@ -19,7 +19,7 @@ npm i svgo -D
 Include plugin in your build script:
 
 ```js
-const litPlugin = require("esbuild-plugin-lit");
+const { default: litPlugin } = require("esbuild-plugin-lit");
 
 require("esbuild").build({
   entryPoints: ["index.ts"],
@@ -53,7 +53,7 @@ For TypeScript support, include ambient module types in your config file:
 
 ```json
 {
-  "include": [".node_modules/esbuild-plugin-lit/modules.d.ts"]
+  "include": ["./node_modules/esbuild-plugin-lit/modules.d.ts"]
 }
 ```
 
@@ -69,11 +69,13 @@ require("esbuild").build({
   outfile: "index.js",
   minify: true,
   plugins: [litPlugin({
-    svgo: {
-      plugins: [
-        "preset-default",
-        "removeXMLNS",
-      ],
+    svg: {
+      svgo: {
+        plugins: [
+          "preset-default",
+          "removeXMLNS",
+        ],
+      },
     },
   })],
 });

@@ -9,8 +9,15 @@ declare module "*.svg" {
   const svg: HTMLTemplateResult;
   export default svg;
 }
+
 declare module "*.html" {
   import { HTMLTemplateResult } from "lit";
   const html: HTMLTemplateResult;
   export default html;
+}
+
+declare module "*.xlf" {
+  import { HTMLTemplateResult } from "lit";
+  const xliff: Map<string, string | HTMLTemplateResult>;
+  export default xliff;
 }

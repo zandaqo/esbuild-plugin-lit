@@ -1,10 +1,10 @@
 {
   "name": "esbuild-plugin-lit",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "Import CSS, SVG, HTML files as tagged-template literals. Optionally minify with esbuild minifier.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,11 @@
     "literal",
     "template"
   ],
-  "files": ["modules.d.ts"],
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "*.js.map"
+  ],
   "author": "Maga D. Zandaqo",
   "license": "MIT",
   "bugs": {
@@ -41,6 +45,10 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "@types/svgo": "^2.6.3"
+  },
   "devDependencies": {
+    "typescript": "^4.6.3"
   }
 }
