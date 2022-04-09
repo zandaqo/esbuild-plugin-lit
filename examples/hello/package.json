@@ -1,0 +1,25 @@
+{
+  "name": "esbuild-plugin-lit-example",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "my-element.js",
+  "scripts": {
+    "build": "node build.js",
+    "extract": "lit-localize extract"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@lit/localize-tools": "^0.6.2",
+    "esbuild": "^0.14.34",
+    "svgo": "^2.8.0",
+    "txml": "^5.1.1"
+  },
+  "dependencies": {
+    "@lit/localize": "^0.11.2",
+    "esbuild-plugin-lit": "^0.0.6",
+    "lit": "^2.2.2"
+  }
+}

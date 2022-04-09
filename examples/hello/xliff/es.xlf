@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="es" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="hbf7f5356f05d8bb6">
+  <source>Hello, <x id="0" equiv-text="${this.name}"/>!</source>
+  <target>¡Hola, <x id="0" equiv-text="${this.name}"/>!</target>
+</trans-unit>
+<trans-unit id="sfe71760fdca7479b">
+  <source>Click the button!</source>
+  <target>¡Presiona el botón!</target>
+</trans-unit>
+</body>
+</file>
+</xliff>

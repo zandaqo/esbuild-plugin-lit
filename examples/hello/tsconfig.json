@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true
+  },
+  "include": ["*.ts", "../modules.d.ts"]
+}
