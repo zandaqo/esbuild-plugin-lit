@@ -10,6 +10,7 @@ export class XLFLoader extends AssetLoader {
     let output = this.transform(input);
     const nodes = this.minifier(output, {
       filter: (node) => node.tagName === "trans-unit",
+      keepWhitespace: true,
     }) as Array<tNode>;
     const messages: Array<string> = [];
     for (const unit of nodes) {
@@ -36,10 +37,9 @@ export class XLFLoader extends AssetLoader {
       messages.push(this.formatMessage(id, strings, hasExpression));
     }
     return `import { html } from '${this.specifier}';
-export const translations = {
+export const templates = {
 ${messages.join(",")}
-}
-export default translations;`;
+}`;
   }
 
   decodePart(encoded: string, id: string) {
@@ -51,6 +51,6 @@ export default translations;`;
   formatMessage(id: string, strings: Array<string>, hasExpression: boolean) {
     return hasExpression
       ? `"${id}": html\`${strings.join("")}\``
-      : `"${id}": "${strings.join("")}"`;
+      : `"${id}": \`${strings.join("")}\``;
   }
 }
