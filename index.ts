@@ -44,7 +44,7 @@ function esbuildPluginLit(options: Options = {}) {
       options.svg?.extension,
       specifier,
       options.svg?.transform,
-      svgo?.optimize,
+      undefined,
       options.svg?.svgo,
     ),
     new XLFLoader(
@@ -57,9 +57,10 @@ function esbuildPluginLit(options: Options = {}) {
   return {
     name: "eslint-plugin-lit",
     setup(build) {
-      // attach minifier to the CSS loader
-      if (build.initialOptions.minify && options.css?.minify !== false) {
-        loaders[0].minifier = build;
+      // attach minifiers
+      if (build.initialOptions.minify) {
+        if (options.css?.minify !== false) loaders[0].minifier = build;
+        if (options.svg?.minify !== false) loaders[2].minifier = svgo?.optimize;
       }
       const cache = new Map<string, { input: string; output: string }>();
       build.onLoad({ filter }, async (args) => {

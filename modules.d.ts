@@ -18,6 +18,5 @@ declare module "*.html" {
 
 declare module "*.xlf" {
   import { HTMLTemplateResult } from "lit";
-  const xliff: Map<string, string | HTMLTemplateResult>;
-  export default xliff;
+  export const templates: Map<string, string | HTMLTemplateResult>;
 }

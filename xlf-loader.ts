@@ -8,6 +8,7 @@ export class XLFLoader extends AssetLoader {
   load(input: string): string {
     const units: Record<string, string> = {};
     let output = this.transform(input);
+    if (!this.minifier) return output; // TODO: throw?
     const nodes = this.minifier(output, {
       filter: (node) => node.tagName === "trans-unit",
       keepWhitespace: true,
