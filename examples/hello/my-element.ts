@@ -13,6 +13,7 @@ import styles from "./my-element.css";
 import ceFlag from "./graphics/ce.svg";
 import enFlag from "./graphics/en.svg";
 import esFlag from "./graphics/es.svg";
+import htmlPart from "./part.html";
 
 // Load xliff files statically
 import * as ce from "./xliff/ce.xlf";
@@ -53,6 +54,7 @@ export class MyElement extends LitElement {
        <button @click=${this.onLanguageChange} part="button">
          ${msg("Click the button!")}
        </button>
+       ${htmlPart}
      `;
   }
 

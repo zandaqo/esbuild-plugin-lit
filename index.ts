@@ -4,6 +4,7 @@ import { HTMLLoader } from "./html-loader";
 import { SVGLoader } from "./svg-loader";
 import { XLFLoader } from "./xlf-loader";
 import type { OptimizeOptions } from "svgo";
+import type { Options as HTMLMinifierOptions } from "html-minifier";
 
 let svgo;
 try {
@@ -13,6 +14,11 @@ try {
 let txml;
 try {
   txml = require("txml");
+} catch (error) {}
+
+let htmlMinifier;
+try {
+  htmlMinifier = require("html-minifier").minify;
 } catch (error) {}
 
 export interface LoaderOptions {
@@ -25,7 +31,9 @@ export interface Options {
   filter?: RegExp;
   specifier?: string;
   css?: LoaderOptions;
-  html?: LoaderOptions;
+  html?: LoaderOptions & {
+    htmlMinifier?: HTMLMinifierOptions;
+  };
   svg?: LoaderOptions & {
     svgo?: OptimizeOptions;
   };
@@ -39,7 +47,13 @@ function esbuildPluginLit(options: Options = {}) {
   } = options;
   const loaders = [
     new CSSLoader(options.css?.extension, specifier, options.css?.transform),
-    new HTMLLoader(options.html?.extension, specifier, options.html?.transform),
+    new HTMLLoader(
+      options.html?.extension,
+      specifier,
+      options.html?.transform,
+      undefined,
+      options.html?.htmlMinifier,
+    ),
     new SVGLoader(
       options.svg?.extension,
       specifier,
@@ -60,6 +74,7 @@ function esbuildPluginLit(options: Options = {}) {
       // attach minifiers
       if (build.initialOptions.minify) {
         if (options.css?.minify !== false) loaders[0].minifier = build;
+        if (options.html?.minify !== false) loaders[1].minifier = htmlMinifier;
         if (options.svg?.minify !== false) loaders[2].minifier = svgo?.optimize;
       }
       const cache = new Map<string, { input: string; output: string }>();

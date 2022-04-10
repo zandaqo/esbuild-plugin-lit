@@ -12,6 +12,12 @@ build({
   },
   plugins: [
     litPlugin({
+      html: {
+        htmlMinifier: {
+          "collapseBooleanAttributes": true,
+          "collapseWhitespace": true,
+        },
+      },
       svg: {
         svgo: {
           plugins: [

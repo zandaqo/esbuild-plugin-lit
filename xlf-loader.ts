@@ -44,9 +44,18 @@ ${messages.join(",")}
   }
 
   decodePart(encoded: string, id: string) {
-    return encoded.replace(/\$\{.*?\}/g, `\${${id}}`)
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">");
+    return encoded
+      .replace(/\$\{.*?\}/g, `\${${id}}`)
+      .replace(
+        /&amp;|&lt;|&gt;|&#39;|&quot;/g,
+        (tag) => ({
+          "&amp;": "&",
+          "&lt;": "<",
+          "&gt;": ">",
+          "&#39;": "'",
+          "&quot;": '"',
+        }[tag] || tag),
+      );
   }
 
   formatMessage(id: string, strings: Array<string>, hasExpression: boolean) {

@@ -4,7 +4,7 @@
 
 A plugin for [esbuild](https://esbuild.github.io/) that allows importing CSS,
 SVG, HTML, XLIFF files as tagged-template literals. The files are (optionally)
-minified using esbuild minifier (for CSS) and
+minified using esbuild minifier (for CSS), `html-minifier` (for HTML), and
 [svgo](https://github.com/svg/svgo) (for SVG).
 
 ## Installation
