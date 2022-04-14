@@ -1,7 +1,7 @@
 {
   "name": "esbuild-plugin-lit",
-  "version": "0.0.8",
-  "description": "Import CSS, SVG, HTML files as tagged-template literals. Optionally minify with esbuild minifier.",
+  "version": "0.0.9",
+  "description": "Import CSS, SVG, HTML, XLIFF files as tagged-template literals. Optionally minify with esbuild minifier.",
   "main": "index.js",
   "scripts": {
     "build": "tsc"
@@ -19,7 +19,8 @@
     "asset",
     "tag",
     "literal",
-    "template"
+    "template",
+    "xlf"
   ],
   "files": [
     "*.js",

@@ -3,8 +3,10 @@ import { CSSLoader } from "./css-loader";
 import { HTMLLoader } from "./html-loader";
 import { SVGLoader } from "./svg-loader";
 import { XLFLoader } from "./xlf-loader";
+import * as path from "path";
 import type { OptimizeOptions } from "svgo";
 import type { Options as HTMLMinifierOptions } from "html-minifier";
+import { LoaderOptions } from "./asset-loader";
 
 let svgo;
 try {
@@ -20,12 +22,6 @@ let htmlMinifier;
 try {
   htmlMinifier = require("html-minifier").minify;
 } catch (error) {}
-
-export interface LoaderOptions {
-  extension?: RegExp;
-  minify?: boolean;
-  transform?: (input: string) => string;
-}
 
 export interface Options {
   filter?: RegExp;
@@ -45,38 +41,15 @@ function esbuildPluginLit(options: Options = {}) {
     filter = /\.(css|svg|html|xlf)$/,
     specifier = "lit",
   } = options;
-  const loaders = [
-    new CSSLoader(options.css?.extension, specifier, options.css?.transform),
-    new HTMLLoader(
-      options.html?.extension,
-      specifier,
-      options.html?.transform,
-      undefined,
-      options.html?.htmlMinifier,
-    ),
-    new SVGLoader(
-      options.svg?.extension,
-      specifier,
-      options.svg?.transform,
-      undefined,
-      options.svg?.svgo,
-    ),
-    new XLFLoader(
-      options.xlf?.extension,
-      specifier,
-      options.xlf?.transform,
-      txml?.parse,
-    ),
-  ];
   return {
     name: "eslint-plugin-lit",
     setup(build) {
-      // attach minifiers
-      if (build.initialOptions.minify) {
-        if (options.css?.minify !== false) loaders[0].minifier = build;
-        if (options.html?.minify !== false) loaders[1].minifier = htmlMinifier;
-        if (options.svg?.minify !== false) loaders[2].minifier = svgo?.optimize;
-      }
+      const loaders = [
+        new CSSLoader(build, options.css, specifier),
+        new HTMLLoader(build, options.html, specifier, htmlMinifier),
+        new SVGLoader(build, options.svg, specifier, svgo?.optimize),
+        new XLFLoader(build, options.xlf, specifier, txml?.parse),
+      ];
       const cache = new Map<string, { input: string; output: string }>();
       build.onLoad({ filter }, async (args) => {
         const key = args.path;
@@ -85,7 +58,8 @@ function esbuildPluginLit(options: Options = {}) {
         if (!value || value.input !== input) {
           for (const loader of loaders) {
             if (loader.extension.test(key)) {
-              const output = loader.load(input);
+              const filename = path.basename(key);
+              const output = loader.load(input, filename);
               value = { input, output };
               break;
             }

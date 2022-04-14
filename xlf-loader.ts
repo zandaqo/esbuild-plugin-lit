@@ -1,9 +1,22 @@
+import { PluginBuild } from "esbuild";
 import type { parse, tNode } from "txml/dist/txml";
-import { AssetLoader } from "./asset-loader";
+import { AssetLoader, LoaderOptions } from "./asset-loader";
 
 export class XLFLoader extends AssetLoader {
   extension = /\.xlf$/;
+  minify = true;
   declare minifier?: typeof parse;
+
+  constructor(
+    build: PluginBuild,
+    options: LoaderOptions = {},
+    specifier = "lit",
+    minifier?: typeof parse,
+  ) {
+    super(build, options, specifier, minifier);
+    if (options.extension) this.extension = options.extension;
+    if (options.transform) this.transform = options.transform;
+  }
 
   load(input: string): string {
     const units: Record<string, string> = {};
