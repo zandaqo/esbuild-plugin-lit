@@ -1,22 +1,22 @@
 declare module "*.css" {
-  import { CSSResult } from "lit";
-  const css: CSSResult;
-  export default css;
+  import type { CSSResult } from "lit";
+  export const styles: CSSResult;
+  export default styles;
 }
 
 declare module "*.svg" {
-  import { HTMLTemplateResult } from "lit";
-  const svg: HTMLTemplateResult;
-  export default svg;
+  import type { HTMLTemplateResult } from "lit";
+  export const template: HTMLTemplateResult;
+  export default template;
 }
 
 declare module "*.html" {
-  import { HTMLTemplateResult } from "lit";
-  const html: HTMLTemplateResult;
-  export default html;
+  import type { HTMLTemplateResult } from "lit";
+  export const template: HTMLTemplateResult;
+  export default template;
 }
 
 declare module "*.xlf" {
-  import { HTMLTemplateResult } from "lit";
+  import type { HTMLTemplateResult } from "lit";
   export const templates: Map<string, string | HTMLTemplateResult>;
 }

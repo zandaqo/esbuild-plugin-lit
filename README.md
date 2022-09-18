@@ -11,12 +11,6 @@ minified using esbuild minifier (for CSS), `html-minifier` (for HTML), and
 
 ```bash
 npm i esbuild-plugin-lit -D
-
-# an optional peer dependency to minify SVG files
-npm i svgo -D
-
-# an optional peer dependency to load XLIFF localization files
-npm i txml -D
 ```
 
 ## Usage
@@ -74,10 +68,7 @@ const { default: litPlugin } = require("esbuild-plugin-lit");
 const SASS = require("sass");
 
 require("esbuild").build({
-  entryPoints: ["index.ts"],
-  bundle: true,
-  outfile: "index.js",
-  minify: true,
+  ...
   plugins: [litPlugin(
     {
       // augment the global filter
@@ -95,21 +86,36 @@ require("esbuild").build({
 ## Minification
 
 If minification is set for esbuild (`minify: true`), the plugin will minify
-imported CCS files using esbuild's built-in minifier. If `svgo` is installed, it
-will also minify SVG files using `svgo`, custom options for svgo can also be
-supplied. Set `minify: false` to opt-out from minification of a specific file
-type:
+imported CCS files using esbuild's built-in minifier. You can set
+`minify: false` in settings for CSS to opt-out from minification:
 
 ```js
 require("esbuild").build({
-  entryPoints: ["index.ts"],
-  bundle: true,
-  outfile: "index.js",
-  minify: true,
+  ...
   plugins: [litPlugin({
     css: {
       minify: false,
-    }
+    },
+  })],
+});
+```
+
+To minify SVG and HTML files, the plugin uses `svgo` and `html-minifier`
+packages respectively, so make sure they are installed if such minification is
+required:
+
+```bash
+npm i svgo -D
+npm i html-minifier -D
+```
+
+Then supply the minifiers' options to the plugin:
+
+```js
+require("esbuild").build({
+  ...
+  minify: true,
+  plugins: [litPlugin({
     svg: {
       svgo: {
         plugins: [
@@ -117,6 +123,9 @@ require("esbuild").build({
           "removeXMLNS",
         ],
       },
+    },
+    html: {
+      htmlMinifier: {}, // use the default options
     },
   })],
 });
@@ -128,8 +137,10 @@ Lit provides `lit-localize` package for localization purposes. When used in the
 so-called runtime mode, the package relies on a set of rollup based tools to
 extract messages from templates into XLIFF localization files
 (`lit-localize extract`), and to later compile them into "importable" JS files
-using `lit-localize build`. With `esbuild-plugin-lit` one can skip the build
-step and "load" XLIFF files directly as shown in our
+using `lit-localize build`.
+
+With `esbuild-plugin-lit` one can skip the build step and "load" XLIFF files
+directly as shown in our
 [example](https://github.com/zandaqo/esbuild-plugin-lit/examples/hello) project:
 
 ```js
@@ -152,6 +163,60 @@ const { setLocale } = configureLocalization({
 
 The files are compiled on the fly by esbuild, thus, simplifying the toolchain
 and speeding up the process.
+
+To load XLIFF files, install `tmxl`:
+
+```bash
+npm i txml -D
+```
+
+And set `xlf` option:
+
+```js
+require("esbuild").build({
+  ...
+  loader: {
+    ".xlf": "text",
+  },
+  plugins: [litPlugin({
+    xlf: {}, // use default settings
+  })],
+});
+```
+
+## Using with Deno
+
+The plugin also supports building with Deno:
+
+```ts
+import * as esbuild from "https://deno.land/x/esbuild@v0.15.7/mod.js";
+import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.5.2/mod.ts";
+import pluginLit from "https://raw.githubusercontent.com/zandaqo/esbuild-plugin-lit/master/mod.ts";
+
+await esbuild
+  .build({
+    plugins: [
+      pluginLit({
+        specifier: "https://cdn.skypack.dev/lit@2.3.1?dts",
+      }),
+      denoPlugin(),
+    ],
+    entryPoints: ["./main.ts"],
+    outfile: "./main.js",
+    target: "es2022",
+    format: "esm",
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+  });
+
+esbuild.stop();
+```
+
+Though, keep in mind that Deno
+[does not support](https://github.com/denoland/deno/issues/15132) ambient module
+typing (`declare module`) and each asset import has to be typed using
+`// @deno-types`.
 
 ## LICENSE
 

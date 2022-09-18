@@ -1,11 +1,8 @@
 {
   "name": "esbuild-plugin-lit",
-  "version": "0.0.10",
+  "version": "0.0.0",
   "description": "Import CSS, SVG, HTML, XLIFF files as tagged-template literals. Optionally minify with esbuild minifier.",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc"
-  },
+  "main": "mod.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zandaqo/esbuild-plugin-lit.git"
@@ -22,11 +19,6 @@
     "template",
     "xlf"
   ],
-  "files": [
-    "*.js",
-    "*.d.ts",
-    "*.js.map"
-  ],
   "author": "Maga D. Zandaqo",
   "license": "MIT",
   "bugs": {
@@ -34,9 +26,9 @@
   },
   "homepage": "https://github.com/zandaqo/esbuild-plugin-lit#readme",
   "peerDependencies": {
-    "esbuild": "^0.15.2",
+    "esbuild": "^0.15.7",
     "html-minifier": "^4.0.0",
-    "lit": "^2.3.0",
+    "lit": "^2.3.1",
     "svgo": "^2.8.0",
     "txml": "^5.1.1"
   },
@@ -54,11 +46,10 @@
       "optional": true
     }
   },
-  "devDependencies": {
-    "@types/html-minifier": "^4.0.2",
-    "@types/svgo": "^2.6.3",
-    "lit": "^2.3.0",
-    "txml": "^5.1.1",
-    "typescript": "^4.7.4"
+  "exports": {
+    "./modules.d.ts": {
+      "import": "./modules.d.ts",
+      "types": "./modules.d.ts"
+    }
   }
 }

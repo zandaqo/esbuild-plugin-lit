@@ -1,29 +1,27 @@
-import { PluginBuild } from "esbuild";
-import type { parse, tNode } from "txml/dist/txml";
-import { AssetLoader, LoaderOptions } from "./asset-loader";
+import type { parseXML, PluginBuild, tNode } from "./deps.ts";
+import { AssetLoader, LoaderOptions } from "./asset-loader.ts";
 
 export class XLFLoader extends AssetLoader {
   extension = /\.xlf$/;
   minify = true;
-  declare minifier?: typeof parse;
+  declare minifier?: typeof parseXML;
 
   constructor(
     build: PluginBuild,
     options: LoaderOptions = {},
     specifier = "lit",
-    minifier?: typeof parse,
+    minifier?: typeof parseXML,
   ) {
     super(build, options, specifier, minifier);
     if (options.extension) this.extension = options.extension;
     if (options.transform) this.transform = options.transform;
   }
 
-  load(input: string): string {
-    const units: Record<string, string> = {};
-    let output = this.transform(input);
-    if (!this.minifier) return output; // TODO: throw?
+  load(input: string, filename: string): Promise<string> {
+    const output = this.transform(input, filename);
+    if (!this.minifier) return Promise.resolve(output); // TODO: throw?
     const nodes = this.minifier(output, {
-      filter: (node) => node.tagName === "trans-unit",
+      filter: (node: tNode) => node.tagName === "trans-unit",
       keepWhitespace: true,
     }) as Array<tNode>;
     const messages: Array<string> = [];
@@ -43,17 +41,16 @@ export class XLFLoader extends AssetLoader {
           strings.push(part);
         } else if (part.tagName === "x") {
           hasExpression = true;
-          const partId: string = part.attributes["id"];
-          const text: string = part.attributes["equiv-text"];
+          const partId = (part.attributes as { id: string })["id"];
+          const text =
+            (part.attributes as { "equiv-text": string })["equiv-text"];
           strings.push(this.decodePart(text, partId));
         }
       }
       messages.push(this.formatMessage(id, strings, hasExpression));
     }
-    return `import { html } from '${this.specifier}';
-export const templates = {
-${messages.join(",")}
-}`;
+    return Promise.resolve(`import { html } from '${this.specifier}';
+export const templates = {${messages.join(",")}};`);
   }
 
   decodePart(encoded: string, id: string) {

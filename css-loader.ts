@@ -1,5 +1,5 @@
-import type { PluginBuild } from "esbuild";
-import { AssetLoader, LoaderOptions } from "./asset-loader";
+import type { PluginBuild } from "./deps.ts";
+import { AssetLoader, LoaderOptions } from "./asset-loader.ts";
 
 export class CSSLoader extends AssetLoader {
   extension = /\.css$/;
@@ -13,14 +13,14 @@ export class CSSLoader extends AssetLoader {
     super(build, options, specifier, minifier);
     if (options.extension) this.extension = options.extension;
     if (options.transform) this.transform = options.transform;
-    this.minify = build.initialOptions.minify && options.minify !== false;
+    this.minify = !!build.initialOptions.minify && options.minify !== false;
     this.sourcemap = !!build.initialOptions.sourcemap;
   }
 
-  load(input: string, filename: string): string {
-    let output = this.transform(input);
+  async load(input: string, filename: string): Promise<string> {
+    let output = this.transform(input, filename);
     let sourcemap = "";
-    const { code, map } = this.build.esbuild.transformSync(output, {
+    const { code, map } = await this.build.esbuild.transform(output, {
       loader: "css",
       minify: this.minify,
       sourcemap: this.sourcemap,

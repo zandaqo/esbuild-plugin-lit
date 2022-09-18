@@ -1,6 +1,5 @@
-import { AssetLoader, LoaderOptions } from "./asset-loader";
-import type { Options as HTMLMinifierOptions } from "html-minifier";
-import type { PluginBuild } from "esbuild";
+import { AssetLoader, LoaderOptions } from "./asset-loader.ts";
+import type { HTMLMinifierOptions, PluginBuild } from "./deps.ts";
 
 type HTMLMinifier = (text: string, options?: HTMLMinifierOptions) => string;
 type HTMLLoaderOptions = LoaderOptions & {
@@ -21,18 +20,18 @@ export class HTMLLoader extends AssetLoader {
     super(build, options, specifier, minifier);
     if (options.extension) this.extension = options.extension;
     if (options.transform) this.transform = options.transform;
-    this.minify = build.initialOptions.minify && options.minify !== false &&
+    this.minify = !!build.initialOptions.minify && options.minify !== false &&
       !!this.minifier;
   }
 
-  load(input: string): string {
-    let output = this.transform(input);
+  load(input: string, filename: string): Promise<string> {
+    let output = this.transform(input, filename);
     if (this.minify) {
-      output = this.minifier(output, this.options.htmlMinifier);
+      output = this.minifier!(output, this.options.htmlMinifier);
     }
     output = output = this.sanitize(input);
-    return `import { html } from '${this.specifier}';
+    return Promise.resolve(`import { html } from '${this.specifier}';
 export const template = html\`${output}\`;
-export default template;`;
+export default template;`);
   }
 }

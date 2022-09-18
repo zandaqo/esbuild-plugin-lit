@@ -1,16 +1,17 @@
-import type { PluginBuild } from "esbuild";
+import type { PluginBuild } from "./deps.ts";
+import { Buffer } from "https://deno.land/std@0.155.0/node/buffer.ts";
 
 export interface LoaderOptions {
   extension?: RegExp;
   minify?: boolean;
-  transform?: (input: string) => string;
+  transform?: (input: string, filename?: string) => string;
 }
 
 export abstract class AssetLoader {
   abstract extension: RegExp;
   minify = false;
   sourcemap = false;
-  transform = (input: string) => input;
+  transform = (input: string, _filename?: string) => input;
 
   constructor(
     public build: PluginBuild,
@@ -30,5 +31,5 @@ export abstract class AssetLoader {
       }`;
   }
 
-  abstract load(input: string, file: string): string;
+  abstract load(input: string, file: string): Promise<string>;
 }
