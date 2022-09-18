@@ -5,7 +5,7 @@
  */
 
 import { html, LitElement } from "lit";
-import { configureLocalization, localized, msg, str } from "@lit/localize";
+import { configureLocalization, localized, msg } from "@lit/localize";
 import { customElement, property } from "lit/decorators.js";
 
 // Load assets as tagged-template literals

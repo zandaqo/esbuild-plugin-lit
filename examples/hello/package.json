@@ -14,12 +14,13 @@
   "devDependencies": {
     "@lit/localize-tools": "^0.6.5",
     "esbuild": "^0.15.2",
+    "esbuild-plugin-lit": "0.1.0",
+    "html-minifier": "^4.0.0",
     "svgo": "^2.8.0",
     "txml": "^5.1.1"
   },
   "dependencies": {
     "@lit/localize": "^0.11.4",
-    "esbuild-plugin-lit": "^0.0.10",
     "lit": "^2.3.0"
   }
 }

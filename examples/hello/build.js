@@ -5,6 +5,7 @@ build({
   entryPoints: ["./index.ts"],
   bundle: true,
   outfile: "./index.js",
+  format: "esm",
   minify: true,
   sourcemap: true,
   loader: {
@@ -26,6 +27,7 @@ build({
           ],
         },
       },
+      xlf: {},
     }),
   ],
 }).then(() => {
