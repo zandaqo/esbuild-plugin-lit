@@ -26,7 +26,7 @@ const locales = new Map(
 const { setLocale } = configureLocalization({
   sourceLocale: "en",
   targetLocales: ["ce", "es"],
-  loadLocale: async (locale) => locales.get(locale) as any,
+  loadLocale: (locale: string) => locales.get(locale),
 });
 
 @localized()

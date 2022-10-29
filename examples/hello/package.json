@@ -14,9 +14,9 @@
   "devDependencies": {
     "@lit/localize-tools": "^0.6.5",
     "esbuild": "^0.15.2",
-    "esbuild-plugin-lit": "0.1.0",
+    "esbuild-plugin-lit": "^0.1.1",
     "html-minifier": "^4.0.0",
-    "svgo": "^2.8.0",
+    "svgo": "^3.0.0",
     "txml": "^5.1.1"
   },
   "dependencies": {
