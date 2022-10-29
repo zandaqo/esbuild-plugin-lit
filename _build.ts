@@ -23,7 +23,7 @@ await build({
   mappings: {
     "https://raw.githubusercontent.com/esbuild/deno-esbuild/main/mod.d.ts": {
       name: "esbuild",
-      version: "^0.15.7",
+      version: "^0.15.12",
       peerDependency: true,
     },
     "https://cdn.skypack.dev/html-minifier?dts": {
@@ -33,7 +33,7 @@ await build({
     },
     "https://cdn.skypack.dev/svgo?dts": {
       name: "svgo",
-      version: "^2.8.0",
+      version: "^3.0.0",
       peerDependency: true,
     },
     "https://cdn.skypack.dev/txml?dts": {

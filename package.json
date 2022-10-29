@@ -1,6 +1,6 @@
 {
   "name": "esbuild-plugin-lit",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "description": "Import CSS, SVG, HTML, XLIFF files as tagged-template literals. Optionally minify with esbuild minifier.",
   "main": "mod.js",
   "repository": {
@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/zandaqo/esbuild-plugin-lit#readme",
   "peerDependencies": {
-    "esbuild": "^0.15.7",
+    "esbuild": "^0.15.12",
     "html-minifier": "^4.0.0",
-    "lit": "^2.3.1",
-    "svgo": "^2.8.0",
+    "lit": "^2.4.0",
+    "svgo": "^3.0.0",
     "txml": "^5.1.1"
   },
   "peerDependenciesMeta": {
